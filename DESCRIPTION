@@ -1,11 +1,11 @@
 Package: SFAsim
 Type: Package
-Title: What the Package Does in One 'Title Case' Line
+Title: Simulate Data for SFA
 Version: 1.0
 Date: 2017-11-11
-Author: Your Name
-Maintainer: Your Name <your@email.com>
-Description: One paragraph description of what the package does as one or more full sentences.
+Author: Vaclav Hausenblas
+Maintainer: Vaclav Hausenblas <vaclav.hausenblas@gmail.com>
+Description: Set of tools to simulate (generate random) data for Stochastic frontier analysis
 License: GPL (>= 2)
 Imports: Rcpp (>= 0.12.13)
 LinkingTo: Rcpp
