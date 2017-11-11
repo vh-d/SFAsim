@@ -23,7 +23,7 @@ shinyApp(
   server = function(input, output) {
     ar_values <- 
       reactive(
-        sim_ar_gamma(input$length, 
+        ar_sim_gamma(input$length, 
                      ar_coef  = input$ar_coef,
                      ar_const = input$ar_const,
                      ar_scale = input$ar_scale)
@@ -57,7 +57,7 @@ shinyApp(
     sidebarLayout(
       sidebarPanel = 
         sidebarPanel(
-          selectInput("dist", "Distribution", choices = c("sim_ar_gamma", "sim_ar_lnorm", "sim_ar_norm")),
+          selectInput("dist", "Distribution", choices = c("ar_sim_gamma", "ar_sim_lnorm", "ar_sim_norm")),
           numericInput("N", "N", 100),
           numericInput("length", "Length", 10),
           numericInput("ar_coef", "AR(1) coeff",  0.8,  step = 0.1),
@@ -96,5 +96,5 @@ shinyApp(
       )
   }
 )
-# rbindlist(lapply(X = 1:100, FUN = function(x) data.table(x = 1:10, y = sim_ar_gamma())))
+# rbindlist(lapply(X = 1:100, FUN = function(x) data.table(x = 1:10, y = ar_sim_gamma())))
 
