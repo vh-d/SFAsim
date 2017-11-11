@@ -1,4 +1,5 @@
 #' @export
+#' @rdname ar_sim
 ar_sim_gamma <- function(l = 10, 
                          ar_coef = 0.8, 
                          ar_const = 0.2,
@@ -19,6 +20,7 @@ ar_sim_gamma <- function(l = 10,
 
 
 #' @export
+#' @rdname ar_sim
 ar_sim_lnorm <- function(l = 10, 
                          y0 = rlnorm(1, 0, 1),
                          ar_coef = 0.8, 
@@ -38,7 +40,8 @@ ar_sim_lnorm <- function(l = 10,
 }
 
 
-#' @export
+#' @export 
+#' @rdname ar_sim
 ar_sim_norm <- function(l = 10, 
                         y0 = rlnorm(1, 0, 1),
                         ar_coef = 0.8, 
@@ -56,7 +59,18 @@ ar_sim_norm <- function(l = 10,
   return(y)
 }
 
-#' @export
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+#' @param dist PARAM_DESCRIPTION, Default: c("norm", "gamma", "lnorm")
+#' @param l PARAM_DESCRIPTION, Default: 10
+#' @param y0 PARAM_DESCRIPTION, Default: rlnorm(1, 0, 1)
+#' @param innov_data PARAM_DESCRIPTION, Default: NULL
+#' @param innov_coeffs PARAM_DESCRIPTION, Default: NULL
+#' @param ... PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @export 
+#' @rdname ar_sim
 ar_sim <- function(dist = c("norm", "gamma", "lnorm"),
                    l = 10,
                    y0 = rlnorm(1, 0, 1),
