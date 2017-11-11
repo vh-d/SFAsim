@@ -82,11 +82,11 @@ sim_data_panel <- function(k = 20, # number of individuals - cross section
                            t = 10, # number of observations per individual
                            x_mean = 10,
                            x_sd = 1,
-                           z_mean = 10,
+                           z_mean = 0.5,
                            z_sd = 1,
                            x_coeff = c(10, 6, 3),
-                           z_intercept = 5,
-                           z_coeff = c(1.9, -0.9),
+                           z_intercept = 1,
+                           z_coeff = c(0.1, -0.4),
                            sigma_u = 2, # variance of the inefficiency term
                            sigma_v = 3, # variance of the random noise
                            ineff = -1,
@@ -110,7 +110,7 @@ sim_data_panel <- function(k = 20, # number of individuals - cross section
   # random exogeneous data
 
   # intercept for each individual (cross section)
-  mu_unique <- rnorm(k, z_intercept, 3)
+  mu_unique <- rtnorm(n = k, mean = z_intercept, sd = 1, lower = 0)
   mu <- rep(mu_unique, each = t)
   K <- cbind(k = rep(1:k, each = t), t = rep(1:t, times = k))
 
@@ -155,7 +155,7 @@ sim_data_panel <- function(k = 20, # number of individuals - cross section
                 u = u, v = v, eps = eps,
                 N = N, t = t, k = k, mu = mu_unique))
   } else
-    return(cbind(y, X, Z, u, v, eps))
+    return(cbind(K, y, X, Z, u, v, eps))
 }
 
 #' @export
@@ -167,7 +167,8 @@ sim_data_panel_ar <- function(k           = 20, # number of individuals - cross 
                               z_sd        = 1,
                               x_coeff     = c(10, 6, 3),
                               z_coeff     = c(0.5, 0.1),
-                              fe          = 5,
+                              fe          = 0.5,
+                              dist        = c("gamma", "lnorm"),
                               ar_coeff    = 0.9,
                               sigma_u     = 2, # variance of the inefficiency term
                               sigma_v     = 3, # variance of the random noise
@@ -191,8 +192,6 @@ sim_data_panel_ar <- function(k           = 20, # number of individuals - cross 
 
   # random exogeneous data
 
-  # intercept for each individual (cross section)
-  mu <- rtnorm(k, fe, 3)
 
   if (z_ncols > 0) {
 
@@ -208,16 +207,30 @@ sim_data_panel_ar <- function(k           = 20, # number of individuals - cross 
     z_coeff <- 0
   }
 
-  u <- rep(0.0, N)
 
-  for (i in 1:k) {
-    u[(i-1)*t + 1] <- mu[i]
-    for (j in 2:t) {
-      current    <- (i-1)*t + j
-      umean      <- u[current - 1]*ar_coeff + z_coeff %*% Z[current, ]
-      u[current] <- rtnorm(n = 1, mean = umean, sd = 2, lower = 0)
-    }
-  }
+  # intercept for each individual (cross section)
+  mu <- rtnorm(k, fe, 2)
+  u <- 
+    as.vector(
+      sapply(1:k,
+             FUN =  
+               function(k_i) 
+                 ar_sim(dist = dist, 
+                        l = t, 
+                        ar_coeff = ar_coeff,
+                        y0 = mu[k_i], 
+                        innov_data = Z[((k_i-1)*t):((k_i)*t), ], 
+                        innov_coeffs = z_coeff)))
+  
+  # u <- rep(0.0, N)
+  # for (i in 1:k) {
+  #   u[(i-1)*t + 1] <- mu[i]
+  #   for (j in 2:t) {
+  #     current    <- (i-1)*t + j
+  #     umean      <- u[current - 1]*ar_coeff + z_coeff %*% Z[current, ]
+  #     u[current] <- rtnorm(n = 1, mean = umean, sd = 2, lower = 0)
+  #   }
+  # }
 
   # matrix of panel data indices
   K <- cbind(k = rep(1:k, each = t), t = rep(1:t, times = k))
@@ -236,7 +249,7 @@ sim_data_panel_ar <- function(k           = 20, # number of individuals - cross 
                 u = u, v = v, eps = eps,
                 N = N, t = t, k = k, mu = mu))
   } else
-    return(cbind(y, X, u, v, eps))
+    return(cbind(K, y, X, Z, u, v, eps))
 }
 
 sim_data_cs_homo <- function(N, ineff = -1) {
