@@ -1,7 +1,7 @@
 Package: SFAsim
 Type: Package
 Title: Simulate Data for SFA
-Version: 0.2
+Version: 0.3
 Date: 2017-11-11
 Author: Vaclav Hausenblas
 Maintainer: Vaclav Hausenblas <vaclav.hausenblas@gmail.com>

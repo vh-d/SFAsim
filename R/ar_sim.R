@@ -1,12 +1,12 @@
 #' @export
 #' @rdname ar_sim
 ar_sim_gamma <- function(l = 10, 
+                         y0 = rgamma(1, 1, 1),
                          ar_coef = 0.8, 
                          ar_const = 0.2,
                          innov = numeric(l),
                          shape = 3) {
   
-  y0 <- rgamma(1, 1, 1)
   y <- numeric(l)
   y[1] <- y0
   
@@ -71,19 +71,8 @@ ar_sim_norm <- function(l = 10,
 #' @export 
 #' @rdname ar_sim
 ar_sim <- function(dist = c("norm", "gamma", "lnorm"),
-                   l = 10,
-                   y0 = rlnorm(1, 0, 1),
-                   innov_data = NULL,
-                   innov_coef = NULL,
                    ...){
   dist <- match.arg(dist)
-
-  innov <- if (!is.null(innov_data)) as.vector(as.matrix(innov_data) %*% innov_coef) else numeric(l)
-  
-  switch (dist,
-    norm = ar_sim_norm(l = l,   innov = innov, ...),
-    lnorm = ar_sim_lnorm(l = l, innov = innov, ...),
-    gamma = ar_sim_gamma(l = l, innov = innov, ...)
-  )
+  do.call(paste0("ar_sim_", dist), args = list(...))
 }
 

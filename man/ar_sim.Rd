@@ -7,8 +7,8 @@
 \alias{ar_sim}
 \title{FUNCTION_TITLE}
 \usage{
-ar_sim_gamma(l = 10, ar_coef = 0.8, ar_const = 0.2, innov = numeric(l),
-  shape = 3)
+ar_sim_gamma(l = 10, y0 = rgamma(1, 1, 1), ar_coef = 0.8,
+  ar_const = 0.2, innov = numeric(l), shape = 3)
 
 ar_sim_lnorm(l = 10, y0 = rlnorm(1, 0, 1), ar_coef = 0.8,
   ar_const = 0.2, innov = numeric(l), sdlog = 0.2, ...)
@@ -16,8 +16,7 @@ ar_sim_lnorm(l = 10, y0 = rlnorm(1, 0, 1), ar_coef = 0.8,
 ar_sim_norm(l = 10, y0 = rlnorm(1, 0, 1), ar_coef = 0.8, ar_const = 0.2,
   innov = numeric(l), ...)
 
-ar_sim(dist = c("norm", "gamma", "lnorm"), l = 10, y0 = rlnorm(1, 0, 1),
-  innov_data = NULL, innov_coef = NULL, ...)
+ar_sim(dist = c("norm", "gamma", "lnorm"), ...)
 }
 \arguments{
 \item{l}{PARAM_DESCRIPTION, Default: 10}
