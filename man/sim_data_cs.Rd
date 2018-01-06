@@ -2,26 +2,28 @@
 % Please edit documentation in R/simulate_data.R
 \name{sim_data_cs}
 \alias{sim_data_cs}
-\title{generate simulated cross-section data for testing purposes}
+\title{generate simulated cross-section data using translog production function}
 \usage{
-sim_data_cs(N = 500, x_coeff = c(10, 6, 3), z_coeff = c(3, 1.5, 0.5),
-  sigma_u = 2, sigma_v = 3, ineff = -1, aslist = F)
+sim_data_cs(N = 500, n_of_inputs = 2, frontier_coef = c(a_0 = 3, a_1 =
+  0.5, a_2 = 0.3, b_1_1 = -0.1, b_2_2 = 0.2, b_1_2 = -0.04),
+  ineff_covar_coef = c(0.5, 0.1, -0.1), ineff_sigma = 2,
+  frontier_sigma = 3, ineff_sign = -1, aslist = FALSE)
 }
 \arguments{
 \item{N}{number of observations}
 
-\item{x_coeff}{coefficients for explanatory variables}
+\item{frontier_coef}{coefficients for explanatory variables}
 
-\item{z_coeff}{coefficients for exogeneous varaibles}
+\item{ineff_covar_coef}{coefficients for exogeneous varaibles}
 
-\item{sigma_u}{variance of the inefficiency term}
+\item{ineff_sigma}{variance of the inefficiency term}
 
-\item{sigma_v}{variance of the random noise}
+\item{frontier_sigma}{variance of the random noise}
 
-\item{ineff}{production (-1) or cost inefficiency form (1),}
+\item{ineff_sign}{production (-1) or cost inefficiency form (1),}
 
 \item{aslist}{TRUE/FALSE to return list or array}
 }
 \description{
-generate simulated cross-section data for testing purposes
+generate simulated cross-section data using translog production function
 }

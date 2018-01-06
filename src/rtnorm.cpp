@@ -14,7 +14,7 @@ using namespace Rcpp;
 
 
 // [[Rcpp::export]]
-NumericVector rtnorm_(int n, double mean, double sd, double lower, double upper) {
+NumericVector rtnorm_cpp(int n, double mean, double sd, double lower, double upper) {
   if (lower >= upper) Rcpp::stop("Upper <= Lower !");
 
   NumericVector ans(n);

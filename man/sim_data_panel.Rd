@@ -5,23 +5,24 @@
 \title{generate simulated panel data for testing purposes}
 \usage{
 sim_data_panel(k = 20, t = 10, x_mean = 10, x_sd = 1, z_mean = 0.5,
-  z_sd = 1, x_coeff = c(10, 6, 3), z_intercept = 1, z_coeff = c(0.1,
-  -0.4), sigma_u = 2, sigma_v = 3, ineff = -1, aslist = F)
+  z_sd = 1, frontier_coef = c(10, 6, 3), z_intercept = 1,
+  ineff_covar_coef = c(0.1, -0.4), ineff_sigma = 2, frontier_sigma = 3,
+  ineff_sign = -1, aslist = FALSE)
 }
 \arguments{
 \item{k}{number of individuals - cross section}
 
 \item{t}{number of observations per individual}
 
-\item{x_coeff}{coefficients for explanatory variables}
+\item{frontier_coef}{coefficients for explanatory variables}
 
-\item{z_coeff}{coefficients for exogeneous varaibles}
+\item{ineff_covar_coef}{coefficients for exogeneous varaibles}
 
-\item{sigma_u}{variance of the inefficiency term}
+\item{ineff_sigma}{variance of the inefficiency term}
 
-\item{sigma_v}{variance of the random noise}
+\item{frontier_sigma}{variance of the random noise}
 
-\item{ineff}{production (-1) or cost inefficiency form (1),}
+\item{ineff_sign}{production (-1) or cost inefficiency form (1),}
 
 \item{aslist}{TRUE/FALSE to return list or array}
 }
