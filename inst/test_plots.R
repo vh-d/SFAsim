@@ -13,9 +13,9 @@ covariate <-
 
 ar <- ar_sim(dist = "gamma", 
              l = len,
-             ar_coeff = 0.9,
+             ar_coef = 0.9,
              innov_data = diff(covariate),
-             innov_coeffs = c(0.1, 0.3),
+             innov_coef = c(0.1, 0.3),
              scale = 0.01)
 
 plot(as.ts(ar), ylim = c(0, 3), type = "l")

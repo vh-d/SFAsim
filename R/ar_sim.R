@@ -3,16 +3,15 @@
 ar_sim_gamma <- function(l = 10, 
                          ar_coef = 0.8, 
                          ar_const = 0.2,
-                         scale = 0.05,
                          innov = numeric(l),
-                         ...) {
+                         shape = 3) {
   
   y0 <- rgamma(1, 1, 1)
   y <- numeric(l)
   y[1] <- y0
   
   for (i in 2:l) {
-    y[i] <- rgamma(1, shape = max(0, (ar_const + ar_coef * y[i-1] + innov[i])) / scale, scale = scale)
+    y[i] <- rgamma(1, shape = shape, rate = max(0.001, shape/(ar_const + ar_coef * y[i-1] + innov[i])))
   }
   
   return(y)
@@ -65,7 +64,7 @@ ar_sim_norm <- function(l = 10,
 #' @param l PARAM_DESCRIPTION, Default: 10
 #' @param y0 PARAM_DESCRIPTION, Default: rlnorm(1, 0, 1)
 #' @param innov_data PARAM_DESCRIPTION, Default: NULL
-#' @param innov_coeffs PARAM_DESCRIPTION, Default: NULL
+#' @param innov_coef PARAM_DESCRIPTION, Default: NULL
 #' @param ... PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -75,11 +74,11 @@ ar_sim <- function(dist = c("norm", "gamma", "lnorm"),
                    l = 10,
                    y0 = rlnorm(1, 0, 1),
                    innov_data = NULL,
-                   innov_coeffs = NULL,
+                   innov_coef = NULL,
                    ...){
   dist <- match.arg(dist)
 
-  innov <- if (!is.null(innov_data)) as.vector(as.matrix(innov_data) %*% innov_coeffs) else numeric(l)
+  innov <- if (!is.null(innov_data)) as.vector(as.matrix(innov_data) %*% innov_coef) else numeric(l)
   
   switch (dist,
     norm = ar_sim_norm(l = l,   innov = innov, ...),

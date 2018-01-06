@@ -220,16 +220,22 @@ sim_data_panel_ar <- function(k           = 20, # number of individuals - cross 
                               frontier_coef     = c(10, 6, 3),
                               ineff_covar_coef  = c(0.5, 0.1),
                               fe          = 0.5,
-                              dist        = c("gamma", "lnorm"),
-                              ar_coeff    = 0.9,
-                              ineff_sigma = 2, # variance of the inefficiency term
+                              ar_const    = 0.3,
+                              ar_coef     = 0.7,
+                              start_dist  = "gamma",
+                              start_dist_opts = list(shape = 1, rate = 2),
+                              ar_dist      = c("gamma", "lnorm"),
+                              ar_dist_args = list(shape = 5),
                               frontier_sigma = 3, # variance of the random noise
                               ineff_sign     = -1,
                               aslist         = FALSE) {
 
+  ar_dist <- match.arg(ar_dist)
+  
+  # total number of observations = n of periods * n of entities 
   N <- t * k
 
-  x_ncols <- length(frontier_coef) - 1
+  x_ncols         <- length(frontier_coef) - 1
   ineff_covar_len <- length(ineff_covar_coef)
 
   # random explanatory data
@@ -260,19 +266,33 @@ sim_data_panel_ar <- function(k           = 20, # number of individuals - cross 
   }
 
 
-  # intercept for each individual (cross section)
-  mu <- rtnorm(k, fe, 2)
+  # starting value for each individual (cross section)
+  start_dist_opts_alt <- start_dist_opts
+  start_dist_opts_alt$n = k
+  start_ineff <- do.call(what = paste0("r", start_dist),
+                         args = start_dist_opts_alt)
+  
+  ar_sim_args <-
+    c(
+      list(
+        dist = ar_dist, 
+        l = t, 
+        ar_coef = ar_coef,
+        ar_const = ar_const,
+        innov_coef = ineff_covar_coef
+      ),
+      ar_dist_args
+    )
+  
   ineff_term <- 
     as.vector(
       sapply(1:k,
              FUN =  
-               function(k_i) 
-                 ar_sim(dist = dist, 
-                        l = t, 
-                        ar_coeff = ar_coeff,
-                        y0 = mu[k_i], 
-                        innov_data = Z[((k_i-1)*t):((k_i)*t), ], 
-                        innov_coeffs = ineff_covar_coef)))
+               function(k_i) {
+                 ar_sim_args$y0         = start_ineff[k_i]
+                 ar_sim_args$innov_data = Z[((k_i-1)*t):((k_i)*t), ]
+                 do.call(what = "ar_sim", args = ar_sim_args)
+               }))
   
   # matrix of panel data indices
   K <- cbind(k = rep(1:k, each = t), t = rep(1:t, times = k))
