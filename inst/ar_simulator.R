@@ -62,7 +62,7 @@ shinyApp(
           numericInput("length", "Length", 10),
           numericInput("ar_coef", "AR(1) coeff",  0.8,  step = 0.1),
           numericInput("ar_const", "AR(1) const", 0.2,  step = 0.1),
-          numericInput("ar_scale", "scale",       0.05, step = 0.01)
+          numericInput("param_1", "param_1",            1, step = 0.1)
         ), 
       mainPanel = 
         mainPanel(
@@ -85,9 +85,10 @@ shinyApp(
                                 do.call(input$dist,
                                         args = list(
                                           l = input$length, 
+                                          y0 = exp(2),
                                           ar_coef  = input$ar_coef,
                                           ar_const = input$ar_const,
-                                          input$ar_scale)))))),
+                                          shape = input$param_1)))))),
                aes(x = x, 
                    y = y, 
                    group = i)) +
