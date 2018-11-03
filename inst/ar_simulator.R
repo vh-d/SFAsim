@@ -1,6 +1,7 @@
 library(shiny)
 library(ggplot2)
 library(data.table)
+library(SFAsim)
 
 # Alt 1
 shinyApp(
@@ -8,9 +9,9 @@ shinyApp(
     sidebarLayout(
       sidebarPanel = 
         sidebarPanel(
-          numericInput("length", "length", 10),
-          numericInput("ar_coef", "AR(1) coeff",  0.8, step = 0.1),
-          numericInput("ar_const", "AR(1) const", 0.2, step = 0.1),
+          numericInput("length",   "length",      10),
+          numericInput("ar_coef",  "AR(1) coeff", 0.8,  step = 0.1),
+          numericInput("ar_const", "AR(1) const", 0.2,  step = 0.1),
           numericInput("ar_scale", "scale",       0.05, step = 0.01)
         ), 
       mainPanel = 
@@ -23,7 +24,8 @@ shinyApp(
   server = function(input, output) {
     ar_values <- 
       reactive(
-        ar_sim_gamma(input$length, 
+        ar_sim_gamma(l = input$length, 
+                     y0 = exp(1),
                      ar_coef  = input$ar_coef,
                      ar_const = input$ar_const,
                      ar_scale = input$ar_scale)
